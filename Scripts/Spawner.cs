@@ -12,24 +12,19 @@ public class Spawner : MonoBehaviour
         StartCoroutine(SpawnEnemies());
     }
 
-    IEnumerator SpawnEnemies()
+    private IEnumerator SpawnEnemies()
     {
+        WaitForSeconds wait = new WaitForSeconds(spawnTime);
+
         while (true)
         {
             Transform randomSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-
             Enemy enemy = Instantiate(enemyPrefab, randomSpawnPoint.position, randomSpawnPoint.rotation);
-
             float randomDirection = Random.Range(0f, 360f);
 
-            Enemy enemyMovement = enemy.GetComponent<Enemy>();
+            enemy.DirectionFromAngle(randomDirection);
 
-            if (enemyMovement != null)
-            {
-                enemyMovement.DirectionFromAngle(randomDirection);
-            }
-
-            yield return new WaitForSeconds(spawnTime);
+            yield return wait;
         }
     }
 }
