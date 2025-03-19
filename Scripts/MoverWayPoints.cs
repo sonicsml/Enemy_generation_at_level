@@ -16,11 +16,17 @@ public class MoverWayPoints : MonoBehaviour
         if (Vector3.Distance(transform.position, currentWaypoint.position) == 0)
         {
             currentWaypointIndex++;
+        
+            if (currentWaypointIndex == _waypoints.Length)
+            {
+                currentWaypointIndex = 0;
+            }
         }
     }
 
     private void MoveToNextPoint(Transform target)
     {
         transform.position = Vector3.MoveTowards(transform.position, target.position, _speed * Time.deltaTime);
+
     }
 }
