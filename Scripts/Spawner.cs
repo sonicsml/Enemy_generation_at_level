@@ -1,11 +1,24 @@
 using System.Collections;
 using UnityEngine;
 
+/*ѕродолжаем работать над проектом с генерацией врагов. 
+
+“еперь кажда€ точка спауна создает свой тип врагов и имеет цель, 
+то есть объект, к которому идут враги. ¬ момент создани€ точка спауна 
+передает врагу свою цель, чтобы тот направилс€ к ней. 
+“аких целей должно быть несколько, у каждого спавнера сво€ цель.
+
+—ами цели движутс€ по заранее определенному маршруту, 
+от одной точки к другой.
+
+—давать как проект на Git и видео демонстрацию*/
+
+
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private Enemy _enemyPrefab;
-    [SerializeField] private Transform[] _spawnPoints;
     [SerializeField] private float _spawnTime = 2f;
+    [SerializeField] private Transform _target;
 
     private void Start()
     {
@@ -18,13 +31,9 @@ public class Spawner : MonoBehaviour
 
         while (enabled)
         {
-            Transform randomSpawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Length)];
-            Enemy enemy = Instantiate(_enemyPrefab, randomSpawnPoint.position, randomSpawnPoint.rotation);
-            float randomDirection = Random.Range(0f, 360f);
+            Enemy enemy = Instantiate(_enemyPrefab, transform.position, Quaternion.identity);
 
-            Vector3 direction = new Vector3(Mathf.Cos(randomDirection), 0, Mathf.Sin(randomDirection)).normalized;
-
-            enemy.SetDirection(direction);
+            enemy.SetTarget(_target);
 
             yield return wait;
         }
