@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] public Enemy enemyPrefab;
-    [SerializeField] public Transform[] spawnPoints;
-    [SerializeField] public float spawnTime = 2f;
+    [SerializeField] private Enemy _enemyPrefab;
+    [SerializeField] private Transform[] _spawnPoints;
+    [SerializeField] private float _spawnTime = 2f;
 
     private void Start()
     {
@@ -14,15 +14,17 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator SpawnEnemies()
     {
-        WaitForSeconds wait = new WaitForSeconds(spawnTime);
+        WaitForSeconds wait = new WaitForSeconds(_spawnTime);
 
-        while (true)
+        while (enabled)
         {
-            Transform randomSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-            Enemy enemy = Instantiate(enemyPrefab, randomSpawnPoint.position, randomSpawnPoint.rotation);
+            Transform randomSpawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Length)];
+            Enemy enemy = Instantiate(_enemyPrefab, randomSpawnPoint.position, randomSpawnPoint.rotation);
             float randomDirection = Random.Range(0f, 360f);
 
-            enemy.DirectionFromAngle(randomDirection);
+            Vector3 direction = new Vector3(Mathf.Cos(randomDirection), 0, Mathf.Sin(randomDirection)).normalized;
+
+            enemy.SetDirection(direction);
 
             yield return wait;
         }

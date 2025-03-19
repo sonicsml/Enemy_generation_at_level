@@ -10,9 +10,9 @@ public class Enemy : MonoBehaviour
         transform.Translate(_direction * _speed * Time.deltaTime, Space.World);
     }
 
-    public void DirectionFromAngle(float angle)
+    public void SetDirection(Vector3 direction)
     {
-        float angleOnRadians = angle * Mathf.Rad2Deg;
-        _direction = new Vector3(Mathf.Cos(angleOnRadians), 0, Mathf.Sin(angleOnRadians)).normalized;
+        _direction = direction.normalized;
     }
 }
+
